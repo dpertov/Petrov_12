@@ -31,14 +31,15 @@
 								newObject[i].id =  'aa'+[i];
 								newObject[i].status = false;
 							}
-							
 							return newObject;
 						},
+			
 			}
 
 			myToDoList.full =  myToDoList.create(myToDoList.todoList);
 			console.log(myToDoList.todoList);
 			console.log(myToDoList);
+		
 
 
 
@@ -51,6 +52,9 @@
 
 
 
+
+		/*	myToDoList.delete();
+			console.log(myToDoList);*/
 		//console.log(deleteElement(fullTodolist,aa2));
 
 
@@ -61,18 +65,20 @@
             console.log(s);
             console.log(last_word);
             console.log(len);
+            	delete: function deleteElement () { 
+					var id = prompt('Введите id элемента для удаления');
+							for (var key in this.full) {
+								
+								if (id === this.full[key].id) {
+									splice(this.full[key],1 )
+								}
+							}
+						}
 
             var d = new Date();
             console.log(d);*/
 			//console.log(deleteElement (fullTodolist));
-				/*delete: function deleteElement (id) { 
-									for (var key in fullTodolist) {
-										console.log(fullTodolist[key].id); 
-										if (id === fullTodolist[key].id) {
-											splice(fullTodolist[key].id,1 )
-										}
-									}
-								}*/
+				/**/
 		/*	var now = new Date();
 			alert( now ); // показывает текущие дату и время*/
 
