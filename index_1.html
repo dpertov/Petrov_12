@@ -11,77 +11,59 @@
 	
 			var myToDoList = {	
 
-				todoList: [
-				{text: 'Купить молоко' },
-				{text: 'Сходить на курсы'},
-				{text: 'купить сахар' },
-				{text: 'выпить молоко'},
-				{text: 'Купить дрожжи' },
-			    {text: 'Спечь пирог' }
-				],
-
-				create: function createToDoList (oldObject) {
-							var newObject = [];
-							var d = new Date();
-							var t = d.toLocaleTimeString();
-							for (var i=0; i < this.todoList.length; i++) {
-								newObject[i] = oldObject[i];
-								newObject[i].date = d.toLocaleDateString();
-								newObject[i].time = t;
-								newObject[i].id =  'aa'+[i];
-								newObject[i].status = false;
-							}
-							return newObject;
-						},
-			
-			}
-
-			myToDoList.full =  myToDoList.create(myToDoList.todoList);
-			console.log(myToDoList.todoList);
-			console.log(myToDoList);
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-		/*	myToDoList.delete();
-			console.log(myToDoList);*/
-		//console.log(deleteElement(fullTodolist,aa2));
-
-
-			/*var s = "These are the times that try people's souls.";
-			len = s.length;
-            var last_word = s.substring(s.lastIndexOf(" ")+1, s.length);
-            var s = todoList.toString(todoList);
-            console.log(s);
-            console.log(last_word);
-            console.log(len);
-            	delete: function deleteElement () { 
-					var id = prompt('Введите id элемента для удаления');
-							for (var key in this.full) {
+				todoList: [],
+				
+				createItem: function(text) {
+								var newObject = {};
+								var d = new Date();
+								newObject.text = text;
+								newObject.date = d.toLocaleDateString();
+								newObject.id =  +Math.random().toFixed(3);
+								newObject.status = false;
 								
-								if (id === this.full[key].id) {
-									splice(this.full[key],1 )
-								}
+								this.todoList.push(newObject);
+							},
+
+				finalItem: function(id) {
+								let i = this.todoList.findIndex(function (item) { 
+									 if (item.id === id) return item;
+								});
+								i === -1 ? console.log('Завершать нечего') : this.todoList[i].status = true;
+								console.log(myToDoList.todoList);
+							},
+
+				deleteItem: function(id) {
+								let i = this.todoList.findIndex((item) => item.id === id);
+								i === -1 ? console.log('Такого элемента нет') : this.todoList.splice(i,1);
+								console.log(myToDoList.todoList);
+							},
+
+				changeItem: function(id, text) {
+								let i = this.todoList.findIndex(item => item.id === id);
+								i === -1 ? console.log('Изменять нечего') : this.todoList[i].text = text;
+								console.log(myToDoList.todoList);
+							},
+				
+				printNotFinal: function() {
+								this.todoList.map(function (item) {
+									if (item.status === false)  console.log(item);
+									});
 							}
-						}
+			}
+				
 
-            var d = new Date();
-            console.log(d);*/
-			//console.log(deleteElement (fullTodolist));
-				/**/
-		/*	var now = new Date();
-			alert( now ); // показывает текущие дату и время*/
+			myToDoList.createItem('Купить молоко');
+			myToDoList.createItem('Сходить на курсы');
+			myToDoList.createItem('купить сахар');
+			myToDoList.createItem('Спечь пирог' );
 
+			console.log(myToDoList.todoList);
+			
+				//myToDoList.deleteitem();
+				//myToDoList.changeitem();
+				myToDoList.finalItem();
+				myToDoList.printNotFinal();
+		
 		</script>
 	</body>
 </html>
