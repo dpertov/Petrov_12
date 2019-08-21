@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Array </title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<h1> TO DO List </h1>
+		
+		<script>
+	
+			var myToDoList = {	
+
+				todoList: [
+				{text: 'Купить молоко' },
+				{text: 'Сходить на курсы'},
+				{text: 'купить сахар' },
+				{text: 'выпить молоко'},
+				{text: 'Купить дрожжи' },
+			    {text: 'Спечь пирог' }
+				],
+
+				create: function createToDoList (oldObject) {
+							var newObject = [];
+							var d = new Date();
+							var t = d.toLocaleTimeString();
+							for (var i=0; i < this.todoList.length; i++) {
+								newObject[i] = oldObject[i];
+								newObject[i].date = d.toLocaleDateString();
+								newObject[i].time = t;
+								newObject[i].id =  'aa'+[i];
+								newObject[i].status = false;
+							}
+							
+							return newObject;
+						},
+			}
+
+			myToDoList.full =  myToDoList.create(myToDoList.todoList);
+			console.log(myToDoList.todoList);
+			console.log(myToDoList);
+
+
+
+
+
+
+
+
+
+
+
+
+		//console.log(deleteElement(fullTodolist,aa2));
+
+
+			/*var s = "These are the times that try people's souls.";
+			len = s.length;
+            var last_word = s.substring(s.lastIndexOf(" ")+1, s.length);
+            var s = todoList.toString(todoList);
+            console.log(s);
+            console.log(last_word);
+            console.log(len);
+
+            var d = new Date();
+            console.log(d);*/
+			//console.log(deleteElement (fullTodolist));
+				/*delete: function deleteElement (id) { 
+									for (var key in fullTodolist) {
+										console.log(fullTodolist[key].id); 
+										if (id === fullTodolist[key].id) {
+											splice(fullTodolist[key].id,1 )
+										}
+									}
+								}*/
+		/*	var now = new Date();
+			alert( now ); // показывает текущие дату и время*/
+
+		</script>
+	</body>
+</html>
