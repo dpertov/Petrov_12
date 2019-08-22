@@ -12,58 +12,104 @@
 			var myToDoList = {	
 
 				todoList: [],
-				
+			
 				createItem: function(text) {
-								var newObject = {};
-								var d = new Date();
+								let newObject = {};
+								let d = new Date();
 								newObject.text = text;
 								newObject.date = d.toLocaleDateString();
-								newObject.id =  +Math.random().toFixed(3);
+								newObject.id =  +Math.random().toFixed(2);
 								newObject.status = false;
 								
 								this.todoList.push(newObject);
+							 menuItem()
 							},
 
-				finalItem: function(id) {
+				changeItem: function() {
+								let id = +prompt('Введите id задачи для редактирования');
+								let i = this.todoList.findIndex(item => item.id === id);
+								if (i === -1)  alert('Такой задачи нет');
+								else { 
+									let text = prompt('Введите новый текст заметки');
+									this.todoList[i].text = text;
+								}	
+								this.printAll();
+							},
+
+				deleteItem: function() {
+								let id = +prompt('Введите id задачи для удаления'); 
+								let i = this.todoList.findIndex(item => item.id === id);
+								i === -1 ? console.log('Такого элемента нет') : this.todoList.splice(i,1);
+								
+								menuItem()
+							},
+
+				finalItem: function() {
+								let id = +prompt('Введите id задачи для завершения'); 
 								let i = this.todoList.findIndex(function (item) { 
-									 if (item.id === id) return item;
+										if (item.id === id) {
+									 	console.log('return');
+									 	return item;
+									 }
 								});
 								i === -1 ? console.log('Завершать нечего') : this.todoList[i].status = true;
-								console.log(myToDoList.todoList);
-							},
-
-				deleteItem: function(id) {
-								let i = this.todoList.findIndex((item) => item.id === id);
-								i === -1 ? console.log('Такого элемента нет') : this.todoList.splice(i,1);
-								console.log(myToDoList.todoList);
-							},
-
-				changeItem: function(id, text) {
-								let i = this.todoList.findIndex(item => item.id === id);
-								i === -1 ? console.log('Изменять нечего') : this.todoList[i].text = text;
-								console.log(myToDoList.todoList);
+								menuItem()
 							},
 				
 				printNotFinal: function() {
 								this.todoList.map(function (item) {
 									if (item.status === false)  console.log(item);
 									});
+								menuItem()
+							},
+
+				printAll: function() {
+								let no = 0, yes = 0, itemList = ''; n = '';
+								for (var i = 0; i < this.todoList.length; i++) { 
+									this.todoList[i].status === false ?  no++ : yes++
+									n = 'id =' + this.todoList[i].id + '  ' + this.todoList[i].text  +
+									'   ' + this.todoList[i].status + '\n';
+									itemList += n;
+								}
+								alert(itemList + '\n' + 'Всего задач = '+ this.todoList.length +' Выполнено = ' + yes +'   Не выполнено = ' + no);
+								menuItem()
 							}
 			}
-				
-
-			myToDoList.createItem('Купить молоко');
-			myToDoList.createItem('Сходить на курсы');
-			myToDoList.createItem('купить сахар');
-			myToDoList.createItem('Спечь пирог' );
-
-			console.log(myToDoList.todoList);
+			Object.freeze(myToDoList);
 			
-				//myToDoList.deleteitem();
-				//myToDoList.changeitem();
-				myToDoList.finalItem();
-				myToDoList.printNotFinal();
-		
+			function menuItem(){
+				let i = 0;
+				do {
+					let menu = ' 1 - Добавить задачу \n 2- Редактировать задачу \n 3- Удалить задачу \n' +
+			            ' 4- Вывести список всех задач \n 5- Показать все НЕ выполненные задачи\n' +
+			            ' 6 - Отметить задачу как "Выполненную" \n 7-ВЫХОД' ;
+					let msg =+prompt('Что Вы хотите сделать со списком задач? \n' + menu);
+					
+					switch(msg) {
+			 			case 1 : myToDoList.createItem( prompt('Введите наименование задачи')); 
+			 					break;
+			 			case 2 : myToDoList.changeItem();
+			 					break;
+			 			case 3 : myToDoList.deleteItem();
+			 					break;
+			 			case 4 : myToDoList.printAll();
+			 					break;
+			 			case 5 : myToDoList.printNotFinal();
+			 					break;
+			 			case 6 : myToDoList.finalItem();
+			 					break;
+			 			case 7 : break;
+			 			default : alert('Сделайте правильный выбор!')
+			 					break;
+			 					
+			 		 	} 
+			 		}
+			 		 while  (msg != 7);
+			 	}
+
+			myToDoList.createItem('Купить молоко'); // задача по умолчанию
+			
+
 		</script>
 	</body>
 </html>
