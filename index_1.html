@@ -83,7 +83,7 @@
 
 				finalItem: function(id) {
 								rezult = this.findId(id);
-								rezult === -1 ? alert('Введите правильно id') : this.itemList[rezult].status = true; 
+								rezult === -1 ? alert('Введите правильно id') : this.itemList[rezult].status = !this.itemList[rezult].status; 
 								menuItem()
 							},
 
