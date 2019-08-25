@@ -11,101 +11,125 @@
 	
 			var myToDoList = {	
 
-				todoList: [],
+				itemList: [],
 			
 				createItem: function(text) {
-								let newObject = {};
-								let d = new Date();
-								newObject.text = text;
-								newObject.date = d.toLocaleDateString();
-								newObject.id =  +Math.random().toFixed(2);
-								newObject.status = false;
-								
-								this.todoList.push(newObject);
+								let rezult = -1;
+
+								if (this.itemList.length > 1) {
+									rezult = this.itemList.findIndex(function (item){
+										return item.text === text;
+									}); 
+								}	
+
+								if (rezult != -1) alert ('Такая задача уже существует!');
+								else {
+									let newObject = {};
+									let date = new Date();
+									newObject.text = text;
+									newObject.date = date.toLocaleDateString();
+									newObject.id =  +Math.random().toFixed(2);
+									newObject.status = false;
+									this.itemList.push(newObject);
+								}
 							 menuItem()
 							},
 
-				changeItem: function() {
-								let id = +prompt('Введите id задачи для редактирования');
-								let i = this.todoList.findIndex(item => item.id === id);
-								if (i === -1)  alert('Такой задачи нет');
+				changeItem: function(id) {
+								let rezult = this.findId(id)
+								if (rezult === -1)  alert('Введите правильно id');
 								else { 
 									let text = prompt('Введите новый текст заметки');
-									this.todoList[i].text = text;
+									this.itemList[rezult].text = text;
 								}	
 								this.printAll();
 							},
 
-				deleteItem: function() {
-								let id = +prompt('Введите id задачи для удаления'); 
-								let i = this.todoList.findIndex(item => item.id === id);
-								i === -1 ? console.log('Такого элемента нет') : this.todoList.splice(i,1);
-								
-								menuItem()
-							},
-
-				finalItem: function() {
-								let id = +prompt('Введите id задачи для завершения'); 
-								let i = this.todoList.findIndex(function (item) { 
-										if (item.id === id) {
-									 	console.log('return');
-									 	return item;
-									 }
-								});
-								i === -1 ? console.log('Завершать нечего') : this.todoList[i].status = true;
-								menuItem()
-							},
-				
-				printNotFinal: function() {
-								this.todoList.map(function (item) {
-									if (item.status === false)  console.log(item);
-									});
+				deleteItem: function(id) {
+								let rezult = this.findId(id);
+								rezult === -1 ? alert('Введите правильно id') : this.itemList.splice(rezult,1);
 								menuItem()
 							},
 
 				printAll: function() {
 								let no = 0, yes = 0, itemList = ''; n = '';
-								for (var i = 0; i < this.todoList.length; i++) { 
-									this.todoList[i].status === false ?  no++ : yes++
-									n = 'id =' + this.todoList[i].id + '  ' + this.todoList[i].text  +
-									'   ' + this.todoList[i].status + '\n';
+								for (var i = 0; i < this.itemList.length; i++) { 
+									this.itemList[i].status === false ?  no++ : yes++
+									n = 'id =' + this.itemList[i].id + '  ' + this.itemList[i].text  +
+									'   ' + this.itemList[i].status + '\n';
 									itemList += n;
 								}
-								alert(itemList + '\n' + 'Всего задач = '+ this.todoList.length +' Выполнено = ' + yes +'   Не выполнено = ' + no);
+								alert(itemList + '\n' + 'Всего задач = '+ this.itemList.length +' Выполнено = ' + yes +'   Не выполнено = ' + no);
 								menuItem()
-							}
+							},
+
+				printSort: function(idsort) {
+								if (idsort === 1) {
+									this.itemList.sort(function(a, b) {
+									  if (a.text > b.text) return 1;
+									  if (a.text < b.text) return -1;
+									  });
+									 myToDoList.printAll();
+								}
+								else if (idsort === 2) {
+									this.itemList.sort(function(a, b) {
+									  if (a.status > b.status) return 1;
+									  if (a.status < b.status) return -1;
+									  });
+									 myToDoList.printAll();
+								}
+								else alert('Сделайте правильный выбор');
+							},
+
+				finalItem: function(id) {
+								rezult = this.findId(id);
+								rezult === -1 ? alert('Введите правильно id') : this.itemList[rezult].status = true; 
+								menuItem()
+							},
+
+				findId: function (id) {
+					let rezult = this.itemList.findIndex(item => item.id === id);
+					if (rezult === -1) {
+						alert('Такой задачи нет'); 
+						return rezult;
+					}	
+					else return rezult;
+				}
 			}
 			Object.freeze(myToDoList);
 			
-			function menuItem(){
-				let i = 0;
-				do {
+			function menuItem() {
+					let id;
 					let menu = ' 1 - Добавить задачу \n 2- Редактировать задачу \n 3- Удалить задачу \n' +
-			            ' 4- Вывести список всех задач \n 5- Показать все НЕ выполненные задачи\n' +
+			            ' 4- Вывести список всех задач \n 5- Показать отсортированные задачи\n' +
 			            ' 6 - Отметить задачу как "Выполненную" \n 7-ВЫХОД' ;
-					let msg =+prompt('Что Вы хотите сделать со списком задач? \n' + menu);
+			        do {
+					 msg = +prompt('Что Вы хотите сделать со списком задач? \n' + menu);
 					
 					switch(msg) {
 			 			case 1 : myToDoList.createItem( prompt('Введите наименование задачи')); 
 			 					break;
-			 			case 2 : myToDoList.changeItem();
-			 					break;
-			 			case 3 : myToDoList.deleteItem();
+			 			case 2 : id = +prompt('Введите id задачи для редактирования');
+			 					 myToDoList.changeItem(id);
+			 					 break;
+			 			case 3 : id = +prompt('Введите id задачи для удаления');
+			 					 myToDoList.deleteItem(id);
 			 					break;
 			 			case 4 : myToDoList.printAll();
 			 					break;
-			 			case 5 : myToDoList.printNotFinal();
+			 			case 5 : id = +prompt('Как сортировать задачи? \n 1 - по алфавиту \n' +
+			 					' 2 - по статусу выполнения?'); 
+			 					 myToDoList.printSort(id);
 			 					break;
-			 			case 6 : myToDoList.finalItem();
+			 			case 6 : id = +prompt('Введите id задачи для завершения'); 
+			 					myToDoList.finalItem(id);
 			 					break;
 			 			case 7 : break;
-			 			default : alert('Сделайте правильный выбор!')
+			 			default : alert('Сделайте правильный выбор!');
 			 					break;
-			 					
-			 		 	} 
-			 		}
-			 		 while  (msg != 7);
-			 	}
+			 					} 
+			 		} while  (msg != 7);
+			 }
 
 			myToDoList.createItem('Купить молоко'); // задача по умолчанию
 			
